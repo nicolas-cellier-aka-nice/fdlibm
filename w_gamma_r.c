@@ -19,14 +19,14 @@
 
 
 #ifdef __STDC__
-	double gamma_r(double x, int *signgamp) /* wrapper lgamma_r */
+        double gamma_r(double x, int *signgamp) /* wrapper lgamma_r */
 #else
-	double gamma_r(x,signgamp)              /* wrapper lgamma_r */
+        double gamma_r(x,signgamp)              /* wrapper lgamma_r */
         double x; int *signgamp;
 #endif
 {
 #ifdef _IEEE_LIBM
-	return __ieee754_gamma_r(x,signgamp);
+        return __ieee754_gamma_r(x,signgamp);
 #else
         double y;
         y = __ieee754_gamma_r(x,signgamp);

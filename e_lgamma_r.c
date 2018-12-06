@@ -156,7 +156,7 @@ static double sin_pi(double x)
         double y,z;
         int n,ix;
 
-        ix = 0x7fffffff&__HI(x);
+        __getHI(ix,x);ix=ix&0x7fffffff;
 
         if(ix<0x3fd00000) return __kernel_sin(pi*x,zero,0);
         y = -x;         /* x is assume negative */
@@ -175,7 +175,7 @@ static double sin_pi(double x)
                 y = zero; n = 0;                 /* y must be even */
             } else {
                 if(ix<0x43300000) z = y+two52;  /* exact */
-                n   = __LO(z)&1;        /* lower word of z */
+                __getLO(n,z);n=n&1;        /* trailing bit of lower word of z */
                 y  = n;
                 n<<= 2;
             }
@@ -199,8 +199,8 @@ double __ieee754_lgamma_r(double x, int *signgamp)
         double t,y,z,nadj,p,p1,p2,p3,q,r,w;
         int i,hx,lx,ix;
 
-        hx = __HI(x);
-        lx = __LO(x);
+        __getHI(hx,x);
+        __getLO(lx,x);
 
     /* purge off +-inf, NaN, +-0, and negative arguments */
         *signgamp = 1;

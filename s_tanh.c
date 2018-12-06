@@ -45,7 +45,7 @@ double tanh(double x)
         int jx,ix;
 
     /* High word of |x|. */
-        jx = __HI(x);
+        __getHI(jx,x);
         ix = jx&0x7fffffff;
 
     /* x is INF or NaN */

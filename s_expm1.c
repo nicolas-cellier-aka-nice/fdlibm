@@ -126,9 +126,9 @@ double expm1(double x)
 {
         double y,hi,lo,c,t,e,hxs,hfx,r1;
         int k,xsb;
-        unsigned hx;
+        unsigned hx,lx;
 
-        hx  = __HI(x);  /* high word of x */
+        __getHI(hx,x);  /* high word of x */
         xsb = hx&0x80000000;            /* sign bit of x */
         if(xsb==0) y=x; else y= -x;     /* y = |x| */
         hx &= 0x7fffffff;               /* high word of |x| */
@@ -137,7 +137,8 @@ double expm1(double x)
         if(hx >= 0x4043687A) {                  /* if |x|>=56*ln2 */
             if(hx >= 0x40862E42) {              /* if |x|>=709.78... */
                 if(hx>=0x7ff00000) {
-                    if(((hx&0xfffff)|__LO(x))!=0) 
+                    __getLO(lx,x);
+                    if(((hx&0xfffff)|lx)!=0) 
                          return x+x;     /* NaN */
                     else return (xsb==0)? x:-1.0;/* exp(+-inf)={inf,-1} */
                 }
@@ -187,19 +188,19 @@ double expm1(double x)
                 else          return  one+2.0*(x-e);
             if (k <= -2 || k>56) {   /* suffice to return exp(x)-1 */
                 y = one-(e-x);
-                __HI(y) += (k<<20);     /* add k to y's exponent */
+                __incExp(y,k);  /* add k to y's exponent */
                 return y-one;
             }
             t = one;
             if(k<20) {
-                __HI(t) = 0x3ff00000 - (0x200000>>k);  /* t=1-2^-k */
+                __setHI(t, 0x3ff00000 - (0x200000>>k));  /* t=1-2^-k */
                 y = t-(e-x);
-                __HI(y) += (k<<20);     /* add k to y's exponent */
+                __incExp(y,k);  /* add k to y's exponent */
            } else {
-                __HI(t)  = ((0x3ff-k)<<20);     /* 2^-k */
+                __setHI(t, ((0x3ff-k)<<20));    /* 2^-k */
                 y = x-(e+t);
                 y += one;
-                __HI(y) += (k<<20);     /* add k to y's exponent */
+                __incExp(y,k);  /* add k to y's exponent */
             }
         }
         return y;

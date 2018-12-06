@@ -81,7 +81,7 @@ double __kernel_standard(double x, double y, int type)
 #define HUGE_VAL inf
         double inf = 0.0;
 
-        __HI(inf) = 0x7ff00000; /* set inf to infinite */
+        __setHI(inf , 0x7ff00000);      /* set inf to infinite */
 #endif
 
 #ifdef _USE_WRITE

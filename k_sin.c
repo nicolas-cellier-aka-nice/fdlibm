@@ -54,7 +54,7 @@ double __kernel_sin(double x, double y, int iy)
 {
         double z,r,v;
         int ix;
-        ix = __HI(x)&0x7fffffff;        /* high word of x */
+        __getHI(ix,x);ix=ix&0x7fffffff;         /* high word of x */
         if(ix<0x3e400000)                       /* |x| < 2**-27 */
            {if((int)x==0) return x;}            /* generate inexact */
         z       =  x*x;

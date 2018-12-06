@@ -33,7 +33,7 @@ double asinh(double x)
 {       
         double t,w;
         int hx,ix;
-        hx = __HI(x);
+        __getHI(hx,x);
         ix = hx&0x7fffffff;
         if(ix>=0x7ff00000) return x+x;  /* x is inf or NaN */
         if(ix< 0x3e300000) {    /* |x|<2**-28 */

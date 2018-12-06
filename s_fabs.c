@@ -19,6 +19,8 @@
 
 double fabs(double x)
 {
-        __HI(x) &= 0x7fffffff;
+        unsigned hx;
+        __getHI(hx,x);
+        __setHI(x,hx & 0x7fffffff);
         return x;
 }

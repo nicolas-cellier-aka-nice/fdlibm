@@ -10,26 +10,23 @@
  * ====================================================
  */
 
-/* Sometimes it's necessary to define __LITTLE_ENDIAN explicitly
-   but these catch some common cases. */
+#include <stdint.h>
+#include <string.h>
 
-#if defined(i386) || defined(i486) || \
-        defined(intel) || defined(x86) || defined(i86pc) || \
-        defined(__alpha) || defined(__osf__)
-#define __LITTLE_ENDIAN
-#endif
+#define __getBits(i,x) do { uint64_t __j; double __f=x; memcpy(&__j,&__f,sizeof __j); i=__j; } while(0)
+#define __setBits(x,i) do { uint64_t __j=i; double __f; memcpy(&__f,&__j,sizeof __f); x=__f; } while(0)
 
-#ifdef __LITTLE_ENDIAN
-#define __HI(x) *(1+(int*)&x)
-#define __LO(x) *(int*)&x
-#define __HIp(x) *(1+(int*)x)
-#define __LOp(x) *(int*)x
-#else
-#define __HI(x) *(int*)&x
-#define __LO(x) *(1+(int*)&x)
-#define __HIp(x) *(int*)x
-#define __LOp(x) *(1+(int*)x)
-#endif
+#define __getHI(i,x) do { uint64_t __i; __getBits(__i,x); i=(uint32_t)( __i >> 32); } while(0)
+#define __getLO(i,x) do { uint64_t __i; __getBits(__i,x); i=(uint32_t)( __i & 0xFFFFFFFFU); } while(0)
+#define __setHI(x,i) do { uint64_t __i; __getBits(__i,x); __i=(__i & 0xFFFFFFFFULL) | (((uint64_t)i) << 32); __setBits(x,__i); } while(0)
+#define __setLO(x,i) do { uint64_t __i; __getBits(__i,x); __i=(__i & 0xFFFFFFFF00000000ULL) | ((uint32_t)(i)); __setBits(x,__i); } while(0)
+#define __setHILO(x,h,l) do { uint64_t __i=(((uint64_t)h) << 32) | ((uint32_t)(l)); __setBits(x,__i); } while(0)
+
+/* flip the sign of x */
+#define __flipSign(x) do { uint64_t __i; __getBits(__i,x); __i=( __i ^ 0x8000000000000000ULL); __setBits(x,__i); } while(0)
+
+/* increment the exponent of x by k */
+#define __incExp(x,k) do { uint64_t __i; __getBits(__i,x); __i=( __i + (((uint64_t)k) << 52)); __setBits(x,__i); } while(0)
 
 /*
  * ANSI/POSIX

@@ -73,13 +73,14 @@ static const double xxx[] = {
 double
 __kernel_tan(double x, double y, int iy) {
         double z, r, v, w, s;
-        int ix, hx;
+        int ix, hx, lx;
 
-        hx = __HI(x);           /* high word of x */
+        __getHI(hx,x);          /* high word of x */
         ix = hx & 0x7fffffff;                   /* high word of |x| */
         if (ix < 0x3e300000) {                  /* x < 2**-28 */
                 if ((int) x == 0) {             /* generate inexact */
-                        if (((ix | __LO(x)) | (iy + 1)) == 0)
+                        __getLO(lx,x);
+                        if (((ix | lx) | (iy + 1)) == 0)
                                 return one / fabs(x);
                         else {
                                 if (iy == 1)
@@ -88,10 +89,10 @@ __kernel_tan(double x, double y, int iy) {
                                         double a, t;
 
                                         z = w = x + y;
-                                        __LO(z) = 0;
+                                        __setLO(z, 0);
                                         v = y - (z - x);
                                         t = a = -one / w;
-                                        __LO(t) = 0;
+                                        __setLO(t, 0);
                                         s = one + t * z;
                                         return t + a * (s + t * v);
                                 }
@@ -138,10 +139,10 @@ __kernel_tan(double x, double y, int iy) {
                 /* compute -1.0 / (x+r) accurately */
                 double a, t;
                 z = w;
-                __LO(z) = 0;
+                __setLO(z, 0);
                 v = r - (z - x);        /* z+v = r+x */
                 t = a = -1.0 / w;       /* a = -1.0/w */
-                __LO(t) = 0;
+                __setLO(t, 0);
                 s = 1.0 + t * z;
                 return t + a * (s + t * v);
         }

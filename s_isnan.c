@@ -21,8 +21,8 @@
 int isnan(double x)
 {
         int hx,lx;
-        hx = (__HI(x)&0x7fffffff);
-        lx = __LO(x);
+        __getHI(hx,x);hx=hx&0x7fffffff;
+        __getLO(lx,x);
         hx |= (unsigned)(lx|(-lx))>>31; 
         hx = 0x7ff00000 - hx;
         return ((unsigned)(hx))>>31;

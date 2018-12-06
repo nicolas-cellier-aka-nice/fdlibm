@@ -22,10 +22,10 @@
 int ilogb(double x)
 {
         int hx,lx,ix;
-
-        hx  = (__HI(x))&0x7fffffff;     /* high word of x */
+    
+        __getHI(hx,x);hx=hx&0x7fffffff;     /* high word of x */
         if(hx<0x00100000) {
-            lx = __LO(x);
+            __getLO(lx,x);
             if((hx|lx)==0) 
                 return 0x80000001;      /* ilogb(0) = 0x80000001 */
             else                        /* subnormal x */

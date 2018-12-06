@@ -40,7 +40,7 @@ double __ieee754_sinh(double x)
         unsigned lx;
 
     /* High word of |x|. */
-        jx = __HI(x);
+        __getHI(jx,x);
         ix = jx&0x7fffffff;
 
     /* x is INF or NaN */

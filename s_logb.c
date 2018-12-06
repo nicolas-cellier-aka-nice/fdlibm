@@ -22,8 +22,8 @@
 double logb(double x)
 {
         int lx,ix;
-        ix = (__HI(x))&0x7fffffff;      /* high |x| */
-        lx = __LO(x);                   /* low x */
+        __getHI(ix,x);ix=ix&0x7fffffff;     /* high |x| */
+        __getLO(lx,x);                  /* low x */
         if((ix|lx)==0) return -1.0/fabs(x);
         if(ix>=0x7ff00000) return x*x;
         if((ix>>=20)==0)                        /* IEEE 754 logb */

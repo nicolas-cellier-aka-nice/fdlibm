@@ -30,10 +30,10 @@ double __ieee754_remainder(double x, double p)
         unsigned sx,lx,lp;
         double p_half;
 
-        hx = __HI(x);           /* high word of x */
-        lx = __LO(x);           /* low  word of x */
-        hp = __HI(p);           /* high word of p */
-        lp = __LO(p);           /* low  word of p */
+        __getHI(hx,x);          /* high word of x */
+        __getLO(lx,x);          /* low  word of x */
+        __getHI(hp,p);          /* high word of p */
+        __getLO(lp,p);          /* low  word of p */
         sx = hx&0x80000000;
         hp &= 0x7fffffff;
         hx &= 0x7fffffff;
@@ -62,6 +62,7 @@ double __ieee754_remainder(double x, double p)
                 if(x>=p_half) x -= p;
             }
         }
-        __HI(x) ^= sx;
+        __getHI(hx,x);
+        __setHI(x,hx ^ sx);
         return x;
 }

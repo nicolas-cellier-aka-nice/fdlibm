@@ -187,7 +187,7 @@ double erf(double x)
 {
         int hx,ix,i;
         double R,S,P,Q,s,y,z,r;
-        hx = __HI(x);
+        __getHI(hx,x);
         ix = hx&0x7fffffff;
         if(ix>=0x7ff00000) {            /* erf(nan)=nan */
             i = ((unsigned)hx>>31)<<1;
@@ -229,7 +229,7 @@ double erf(double x)
                                 sb5+s*(sb6+s*sb7))))));
         }
         z  = x;  
-        __LO(z) = 0;
+        __setLO(z, 0);
         r  =  __ieee754_exp(-z*z-0.5625)*__ieee754_exp((z-x)*(z+x)+R/S);
         if(hx>=0) return one-r/x; else return  r/x-one;
 }
@@ -238,7 +238,7 @@ double erfc(double x)
 {
         int hx,ix;
         double R,S,P,Q,s,y,z,r;
-        hx = __HI(x);
+        __getHI(hx,x);
         ix = hx&0x7fffffff;
         if(ix>=0x7ff00000) {                    /* erfc(nan)=nan */
                                                 /* erfc(+-inf)=0,2 */
@@ -286,7 +286,7 @@ double erfc(double x)
                                 sb5+s*(sb6+s*sb7))))));
             }
             z  = x;
-            __LO(z)  = 0;
+            __setLO(z, 0);
             r  =  __ieee754_exp(-z*z-0.5625)*
                         __ieee754_exp((z-x)*(z+x)+R/S);
             if(hx>0) return r/x; else return two-r/x;

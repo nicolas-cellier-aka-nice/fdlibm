@@ -26,10 +26,10 @@ double __ieee754_fmod(double x, double y)
         int n,hx,hy,hz,ix,iy,sx,i;
         unsigned lx,ly,lz;
 
-        hx = __HI(x);           /* high word of x */
-        lx = __LO(x);           /* low  word of x */
-        hy = __HI(y);           /* high word of y */
-        ly = __LO(y);           /* low  word of y */
+        __getHI(hx,x);          /* high word of x */
+        __getLO(lx,x);          /* low  word of x */
+        __getHI(hy,y);          /* high word of y */
+        __getLO(ly,y);          /* low  word of y */
         sx = hx&0x80000000;             /* sign of x */
         hx ^=sx;                /* |x| */
         hy &= 0x7fffffff;       /* |y| */
@@ -111,8 +111,8 @@ double __ieee754_fmod(double x, double y)
         }
         if(iy>= -1022) {        /* normalize output */
             hx = ((hx-0x00100000)|((iy+1023)<<20));
-            __HI(x) = hx|sx;
-            __LO(x) = lx;
+            __setHI(x, hx|sx);
+            __setLO(x, lx);
         } else {                /* subnormal output */
             n = -1022 - iy;
             if(n<=20) {
@@ -123,8 +123,8 @@ double __ieee754_fmod(double x, double y)
             } else {
                 lx = hx>>(n-32); hx = sx;
             }
-            __HI(x) = hx|sx;
-            __LO(x) = lx;
+            __setHI(x, hx|sx);
+            __setLO(x, lx);
             x *= one;           /* create necessary signal */
         }
         return x;               /* exact output */

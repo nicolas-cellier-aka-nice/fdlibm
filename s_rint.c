@@ -34,9 +34,9 @@ double rint(double x)
         int i0,j0,sx;
         unsigned i,i1;
         double w,t;
-        i0 =  __HI(x);
+        __getHI(i0,x);
         sx = (i0>>31)&1;
-        i1 =  __LO(x);
+        __getLO(i1,x);
         j0 = ((i0>>20)&0x7ff)-0x3ff;
         if(j0<20) {
             if(j0<0) {  
@@ -44,11 +44,11 @@ double rint(double x)
                 i1 |= (i0&0x0fffff);
                 i0 &= 0xfffe0000;
                 i0 |= ((i1|-i1)>>12)&0x80000;
-                __HI(x)=i0;
+                __setHI(x,i0);
                 w = TWO52[sx]+x;
                 t =  w-TWO52[sx];
-                i0 = __HI(t);
-                __HI(t) = (i0&0x7fffffff)|(sx<<31);
+                __getHI(i0,t);
+                __setHI(t, (i0&0x7fffffff)|(sx<<31));
                 return t;
             } else {
                 i = (0x000fffff)>>j0;
@@ -68,8 +68,7 @@ double rint(double x)
             i>>=1;
             if((i1&i)!=0) i1 = (i1&(~i))|((0x40000000)>>(j0-20));
         }
-        __HI(x) = i0;
-        __LO(x) = i1;
+        __setHILO(x, i0, i1);
         w = TWO52[sx]+x;
         return w-TWO52[sx];
 }

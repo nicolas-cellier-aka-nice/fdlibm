@@ -43,7 +43,7 @@ double __ieee754_cosh(double x)
         unsigned lx;
 
     /* High word of |x|. */
-        ix = __HI(x);
+        __getHI(ix,x);
         ix &= 0x7fffffff;
 
     /* x is INF or NaN */
@@ -69,7 +69,7 @@ double __ieee754_cosh(double x)
     /* |x| in [log(maxdouble), overflowthresold] */
         lx = *( (((*(unsigned*)&one)>>29)) + (unsigned*)&x);
         if (ix<0x408633CE || 
-              (ix==0x408633ce)&&(lx<=(unsigned)0x8fb9f87d)) {
+              ((ix==0x408633ce)&&(lx<=0x8fb9f87dU))) {
             w = __ieee754_exp(half*fabs(x));
             t = half*w;
             return t*w;

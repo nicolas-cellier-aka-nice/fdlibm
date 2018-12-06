@@ -82,7 +82,7 @@ double __ieee754_j0(double x)
         double z, s,c,ss,cc,r,u,v;
         int hx,ix;
 
-        hx = __HI(x);
+        __getHI(hx,x);
         ix = hx&0x7fffffff;
         if(ix>=0x7ff00000) return one/(x*x);
         x = fabs(x);
@@ -142,9 +142,9 @@ double __ieee754_y0(double x)
         double z, s,c,ss,cc,u,v;
         int hx,ix,lx;
 
-        hx = __HI(x);
+        __getHI(hx,x);
         ix = 0x7fffffff&hx;
-        lx = __LO(x);
+        __getLO(lx,x);
     /* Y0(NaN) is NaN, y0(-inf) is Nan, y0(inf) is 0  */
         if(ix>=0x7ff00000) return  one/(x+x*x); 
         if((ix|lx)==0) return -one/zero;
@@ -268,7 +268,7 @@ static double pzero(double x)
         const double *p,*q;
         double z,r,s;
         int ix;
-        ix = 0x7fffffff&__HI(x);
+        __getHI(ix,x);ix=ix&0x7fffffff;
         if(ix>=0x40200000)     {p = pR8; q= pS8;}
         else if(ix>=0x40122E8B){p = pR5; q= pS5;}
         else if(ix>=0x4006DB6D){p = pR3; q= pS3;}
@@ -362,7 +362,7 @@ static double qzero(double x)
         const double *p,*q;
         double s,r,z;
         int ix;
-        ix = 0x7fffffff&__HI(x);
+        __getHI(ix,x);ix=ix&0x7fffffff;
         if(ix>=0x40200000)     {p = qR8; q= qS8;}
         else if(ix>=0x40122E8B){p = qR5; q= qS5;}
         else if(ix>=0x4006DB6D){p = qR3; q= qS3;}

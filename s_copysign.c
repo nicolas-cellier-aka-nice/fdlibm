@@ -21,6 +21,9 @@
 
 double copysign(double x, double y)
 {
-        __HI(x) = (__HI(x)&0x7fffffff)|(__HI(y)&0x80000000);
+        unsigned int hx,hy;
+        __getHI(hx,x);
+        __getHI(hy,y);
+        __setHI(x, (hx&0x7fffffff)|(hy&0x80000000U));
         return x;
 }

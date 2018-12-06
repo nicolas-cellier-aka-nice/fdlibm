@@ -55,10 +55,10 @@ double __ieee754_atan2(double y, double x)
         int k,m,hx,hy,ix,iy;
         unsigned lx,ly;
 
-        hx = __HI(x); ix = hx&0x7fffffff;
-        lx = __LO(x);
-        hy = __HI(y); iy = hy&0x7fffffff;
-        ly = __LO(y);
+        __getHI(hx,x); ix = hx&0x7fffffff;
+        __getLO(lx,x);
+        __getHI(hy,y); iy = hy&0x7fffffff;
+        __getLO(ly,y);
         if(((ix|((lx|-lx)>>31))>0x7ff00000)||
            ((iy|((ly|-ly)>>31))>0x7ff00000))    /* x or y is NaN */
            return x+y;
@@ -105,7 +105,7 @@ double __ieee754_atan2(double y, double x)
         else z=atan(fabs(y/x));         /* safe to do y/x */
         switch (m) {
             case 0: return       z  ;   /* atan(+,+) */
-            case 1: __HI(z) ^= 0x80000000;
+            case 1: __flipSign(z);
                     return       z  ;   /* atan(-,+) */
             case 2: return  pi-(z-pi_lo);/* atan(+,-) */
             default: /* case 3 */

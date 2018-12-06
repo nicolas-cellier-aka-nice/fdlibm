@@ -25,10 +25,10 @@ double nextafter(double x, double y)
         int     hx,hy,ix,iy;
         unsigned lx,ly;
 
-        hx = __HI(x);           /* high word of x */
-        lx = __LO(x);           /* low  word of x */
-        hy = __HI(y);           /* high word of y */
-        ly = __LO(y);           /* low  word of y */
+        __getHI(hx,x);          /* high word of x */
+        __getLO(lx,x);          /* low  word of x */
+        __getHI(hy,y);          /* high word of y */
+        __getLO(ly,y);          /* low  word of y */
         ix = hx&0x7fffffff;             /* |x| */
         iy = hy&0x7fffffff;             /* |y| */
 
@@ -37,8 +37,7 @@ double nextafter(double x, double y)
            return x+y;                          
         if(x==y) return x;              /* x=y, return x */
         if((ix|lx)==0) {                        /* x == 0 */
-            __HI(x) = hy&0x80000000;    /* return +-minsubnormal */
-            __LO(x) = 1;
+            __setHILO(x, hy&0x80000000U,1); /* return +-minsubnormal */
             y = x*x;
             if(y==x) return y; else return x;   /* raise underflow flag */
         } 
@@ -64,10 +63,10 @@ double nextafter(double x, double y)
         if(hy<0x00100000) {             /* underflow */
             y = x*x;
             if(y!=x) {          /* raise underflow flag */
-                __HI(y) = hx; __LO(y) = lx;
+                __setHILO(y, hx, lx);
                 return y;
             }
         }
-        __HI(x) = hx; __LO(x) = lx;
+        __setHILO(x, hx, lx);
         return x;
 }

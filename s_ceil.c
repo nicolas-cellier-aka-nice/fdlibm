@@ -28,8 +28,8 @@ double ceil(double x)
 {
         int i0,i1,j0;
         unsigned i,j;
-        i0 =  __HI(x);
-        i1 =  __LO(x);
+        __getHI(i0,x);
+        __getLO(i1,x);
         j0 = ((i0>>20)&0x7ff)-0x3ff;
         if(j0<20) {
             if(j0<0) {  /* raise inexact if x != 0 */
@@ -63,7 +63,6 @@ double ceil(double x)
                 i1 &= (~i);
             }
         }
-        __HI(x) = i0;
-        __LO(x) = i1;
+        __setHILO(x, i0, i1);
         return x;
 }

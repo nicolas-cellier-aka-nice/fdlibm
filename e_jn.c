@@ -55,9 +55,9 @@ double __ieee754_jn(int n, double x)
     /* J(-n,x) = (-1)^n * J(n, x), J(n, -x) = (-1)^n * J(n, x)
      * Thus, J(-n,x) = J(n,-x)
      */
-        hx = __HI(x);
+        __getHI(hx,x);
         ix = 0x7fffffff&hx;
-        lx = __LO(x);
+        __getLO(lx,x);
     /* if J(n,NaN) is NaN */
         if((ix|((unsigned)(lx|-lx))>>31)>0x7ff00000) return x+x;
         if(n<0){                
@@ -206,11 +206,12 @@ double __ieee754_yn(int n, double x)
 {
         int i,hx,ix,lx;
         int sign;
+        unsigned hb;
         double a, b, temp;
 
-        hx = __HI(x);
+        __getHI(hx,x);
         ix = 0x7fffffff&hx;
-        lx = __LO(x);
+        __getLO(lx,x);
     /* if Y(n,NaN) is NaN */
         if((ix|((unsigned)(lx|-lx))>>31)>0x7ff00000) return x+x;
         if((ix|lx)==0) return -one/zero;
@@ -248,9 +249,11 @@ double __ieee754_yn(int n, double x)
             a = __ieee754_y0(x);
             b = __ieee754_y1(x);
         /* quit if b is -inf */
-            for(i=1;i<n&&(__HI(b) != 0xfff00000);i++){ 
+            __getHI(hb,b);
+            for(i=1;i<n&&(hb != 0xfff00000);i++){
                 temp = b;
                 b = ((double)(i+i)/x)*b - a;
+                __getHI(hb,b);
                 a = temp;
             }
         }

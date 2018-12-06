@@ -17,13 +17,7 @@
 
 #include "fdlibm.h"
 
-
-#ifdef __STDC__
-        double acos(double x)           /* wrapper acos */
-#else
-        double acos(x)                  /* wrapper acos */
-        double x;
-#endif
+double acos(double x)           /* wrapper acos */
 {
 #ifdef _IEEE_LIBM
         return __ieee754_acos(x);

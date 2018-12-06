@@ -22,19 +22,9 @@
 
 #include "fdlibm.h"
 
-#ifdef __STDC__
 static const double zero = 0.0;
-#else
-static double zero = 0.0;
-#endif
 
-
-#ifdef __STDC__
-        double __ieee754_remainder(double x, double p)
-#else
-        double __ieee754_remainder(x,p)
-        double x,p;
-#endif
+double __ieee754_remainder(double x, double p)
 {
         int hx,hp;
         unsigned sx,lx,lp;

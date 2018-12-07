@@ -50,6 +50,26 @@ namespace {
         ref.close();
     }
     
+    TEST(FDLIBMTest , smoke_test_sqrt )
+    {
+        uint64_t max_ulp = 2;
+        std::ifstream ref;
+        ref.open("smoke_test_sqrt.txt",std::ifstream::in);
+        while (ref.good() && ! ref.eof()) {
+            uint64_t ix,iy,iz,ulp_error;
+            double x,z;
+            ref >> std::hex >> ix;
+            ref >> std::hex >> iy;
+            ref.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            __setBits(x,ix);
+            z=sqrt(x);
+            __getBits(iz,z);
+            ulp_error = std::abs((int64_t)(iy-iz));
+            ASSERT_LE(ulp_error,max_ulp);
+        }
+        ref.close();
+    }
+    
     TEST(FDLIBMTest , smoke_test_sin )
     {
         uint64_t max_ulp = 2;

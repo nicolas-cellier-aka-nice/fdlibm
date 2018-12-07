@@ -9,7 +9,7 @@ high := (high , (high collect: [:e | e bitXor: 16rFFFFF])) asSet sorted.
 exp := #( 0 1 1023 ) , ((0 to: 9) collect: [:e | 1<<e + 1023]) , ((0 to: 9) collect: [:e | 1023 - (1<<e)]).
 exp := exp asSet sorted.
 
-sign := #( 0).
+sign := #(1 0).
 
 FileDirectory default fileNamed: 'smoke_test_tan.txt' do: [:str |
 sign do: [:s |
@@ -19,7 +19,6 @@ sign do: [:s |
 				x := BoxedFloat64 basicNew: 2.
 				x basicAt: 1 put: s << 11 + e << 20 + h.
 				x basicAt: 2 put: l.
-				x = 0.0 ifFalse: [
 				y := (x*1.0 asArbitraryPrecisionFloatNumBits: 54*3) tan asFloat.
 				str nextPutAll: '0x'.
 				(x basicAt: 1) printOn: str base: 16 length: 8 padded: true.
@@ -28,4 +27,4 @@ sign do: [:s |
 				str nextPutAll: '0x'.
 				(y basicAt: 1) printOn: str base: 16 length: 8 padded: true.
 				(y basicAt: 2) printOn: str base: 16 length: 8 padded: true.
-				str lf]]]]]].
+				str lf]]]]].

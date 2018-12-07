@@ -26,7 +26,7 @@
 #define __flipSign(x) do { uint64_t __i; __getBits(__i,x); __i=( __i ^ 0x8000000000000000ULL); __setBits(x,__i); } while(0)
 
 /* increment the exponent of x by k */
-#define __incExp(x,k) do { uint64_t __i; __getBits(__i,x); __i=( __i + (((uint64_t)k) << 52)); __setBits(x,__i); } while(0)
+#define __incExp(x,k) do { uint64_t __i; __getBits(__i,x); __i=(k>=0)?( __i + (((uint64_t)k) << 52)):( __i - (((uint64_t)(-k)) << 52)); __setBits(x,__i); } while(0)
 
 /*
  * ANSI/POSIX

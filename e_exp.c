@@ -130,6 +130,7 @@ double __ieee754_exp(double x)  /* default IEEE double exp */
         } 
         else if(hx < 0x3e300000)  {     /* when |x|<2**-28 */
             if(huge+x>one) return one+x;/* trigger inexact */
+            k = 0; /* note: this code is unreachable, but remove a compiler warning */
         }
         else k = 0;
 

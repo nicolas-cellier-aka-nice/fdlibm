@@ -10,9 +10,17 @@
  * ====================================================
  */
 
+
+#ifndef __FDLIBM_H
+#define __FDLIBM_H
+
 #include <stdint.h>
 #include <string.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+    
 #define __getBits(i,x) do { uint64_t __j; double __f=x; memcpy(&__j,&__f,sizeof __j); i=__j; } while(0)
 #define __setBits(x,i) do { uint64_t __j=i; double __f; memcpy(&__f,&__j,sizeof __f); x=__f; } while(0)
 
@@ -205,3 +213,9 @@ extern double __kernel_sin(double,double,int);
 extern double __kernel_cos(double,double);
 extern double __kernel_tan(double,double,int);
 extern int    __kernel_rem_pio2(double*,double*,int,int,int,const int*);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __FDLIBM_H */

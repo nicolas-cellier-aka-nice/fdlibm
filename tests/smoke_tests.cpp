@@ -110,6 +110,66 @@ namespace {
         ref.close();
     }
     
+    TEST(FDLIBMTest , smoke_test_asin )
+    {
+        uint64_t max_ulp = 2;
+        std::ifstream ref;
+        ref.open("smoke_test_asin.txt",std::ifstream::in);
+        while (ref.good() && ! ref.eof()) {
+            uint64_t ix,iy,iz,ulp_error;
+            double x,z;
+            ref >> std::hex >> ix;
+            ref >> std::hex >> iy;
+            ref.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            __setBits(x,ix);
+            z=asin(x);
+            __getBits(iz,z);
+            ulp_error = std::abs((int64_t)(iy-iz));
+            ASSERT_LE(ulp_error,max_ulp);
+        }
+        ref.close();
+    }
+    
+    TEST(FDLIBMTest , smoke_test_acos )
+    {
+        uint64_t max_ulp = 2;
+        std::ifstream ref;
+        ref.open("smoke_test_acos.txt",std::ifstream::in);
+        while (ref.good() && ! ref.eof()) {
+            uint64_t ix,iy,iz,ulp_error;
+            double x,z;
+            ref >> std::hex >> ix;
+            ref >> std::hex >> iy;
+            ref.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            __setBits(x,ix);
+            z=acos(x);
+            __getBits(iz,z);
+            ulp_error = std::abs((int64_t)(iy-iz));
+            ASSERT_LE(ulp_error,max_ulp);
+        }
+        ref.close();
+    }
+    
+    TEST(FDLIBMTest , smoke_test_atan )
+    {
+        uint64_t max_ulp = 2;
+        std::ifstream ref;
+        ref.open("smoke_test_atan.txt",std::ifstream::in);
+        while (ref.good() && ! ref.eof()) {
+            uint64_t ix,iy,iz,ulp_error;
+            double x,z;
+            ref >> std::hex >> ix;
+            ref >> std::hex >> iy;
+            ref.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            __setBits(x,ix);
+            z=atan(x);
+            __getBits(iz,z);
+            ulp_error = std::abs((int64_t)(iy-iz));
+            ASSERT_LE(ulp_error,max_ulp);
+        }
+        ref.close();
+    }
+    
 }  // namespace
 
 int main(int argc, char **argv) {

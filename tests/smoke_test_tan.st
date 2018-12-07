@@ -20,6 +20,8 @@ sign do: [:s |
 				x basicAt: 1 put: s << 11 + e << 20 + h.
 				x basicAt: 2 put: l.
 				y := (x*1.0 asArbitraryPrecisionFloatNumBits: 54*3) tan asFloat.
+				"Beware: there is no negativeZero in ArbitraryPrecisionFloat"
+				(x=0 and: [x signBit=1]) ifTrue: [y := y negated].
 				str nextPutAll: '0x'.
 				(x basicAt: 1) printOn: str base: 16 length: 8 padded: true.
 				(x basicAt: 2) printOn: str base: 16 length: 8 padded: true. 

@@ -292,7 +292,7 @@ double __ieee754_pow(double x, double y)
         r  = (z*t1)/(t1-two)-(w+z*w);
         z  = one-(r-z);
         __getHI(j,z);
-        j += (n<<20);
+        j = (n>=0) ? j + (n<<20) : j - ((-n)<<20);
         if((j>>20)<=0) z = scalbn(z,n); /* subnormal output */
         else __incExp(z,n);
         return s*z;

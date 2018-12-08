@@ -114,8 +114,10 @@ double __ieee754_sqrt(double x)
             }
             for(i=0;(ix0&0x00100000)==0;i++) ix0<<=1;
             m -= i-1;
-            ix0 |= (ix1>>(32-i));
-            ix1 <<= i;
+            if(i) { /* protect: shift>>32 is undefined */
+                ix0 |= (ix1>>(32-i));
+                ix1 <<= i;
+            }
         }
         m -= 1023;      /* unbias exponent */
         ix0 = (ix0&0x000fffff)|0x00100000;
@@ -176,7 +178,7 @@ double __ieee754_sqrt(double x)
         ix0 = (q>>1)+0x3fe00000;
         ix1 =  q1>>1;
         if ((q&1)==1) ix1 |= sign;
-        ix0 += (m <<20);
+        ix0 = (m>=0) ? ix0 + (m <<20) : ix0 - ((-m) <<20);
         __setHILO(z, ix0, ix1);
         return z;
 }

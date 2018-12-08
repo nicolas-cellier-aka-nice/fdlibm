@@ -22,7 +22,7 @@ namespace {
             ref >> std::hex >> iy;
             ref.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             __setBits(x,ix);
-            z=exp(x);
+            z=__ieee754_exp(x);
             __getBits(iz,z);
             ulp_error = std::abs((int64_t)(iy-iz));
             ASSERT_LE(ulp_error,max_ulp);
@@ -42,7 +42,7 @@ namespace {
             ref >> std::hex >> iy;
             ref.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             __setBits(x,ix);
-            z=log(x);
+            z=__ieee754_log(x);
             __getBits(iz,z);
             ulp_error = std::abs((int64_t)(iy-iz));
             ASSERT_LE(ulp_error,max_ulp);
@@ -62,7 +62,7 @@ namespace {
             ref >> std::hex >> iy;
             ref.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             __setBits(x,ix);
-            z=sqrt(x);
+            z=__ieee754_sqrt(x);
             __getBits(iz,z);
             ulp_error = std::abs((int64_t)(iy-iz));
             ASSERT_LE(ulp_error,max_ulp);
@@ -186,7 +186,7 @@ namespace {
             ref >> std::hex >> iy;
             ref.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             __setBits(x,ix);
-            z=asin(x);
+            z=__ieee754_asin(x);
             __getBits(iz,z);
             ulp_error = std::abs((int64_t)(iy-iz));
             ASSERT_LE(ulp_error,max_ulp);
@@ -206,7 +206,7 @@ namespace {
             ref >> std::hex >> iy;
             ref.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             __setBits(x,ix);
-            z=acos(x);
+            z=__ieee754_acos(x);
             __getBits(iz,z);
             ulp_error = std::abs((int64_t)(iy-iz));
             ASSERT_LE(ulp_error,max_ulp);

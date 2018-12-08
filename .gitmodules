@@ -2,3 +2,4 @@
 	path = googletest
 	url = https://github.com/abseil/googletest.git
 	branch = master
+	shallow = true

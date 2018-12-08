@@ -70,6 +70,50 @@ namespace {
         ref.close();
     }
     
+    TEST(FDLIBMTest , smoke_test_hypot )
+    {
+        uint64_t max_ulp = 2;
+        std::ifstream ref;
+        ref.open("smoke_test_hypot.txt",std::ifstream::in);
+        while (ref.good() && ! ref.eof()) {
+            uint64_t ix,iy,iz,it,ulp_error;
+            double x,y,t;
+            ref >> std::hex >> ix;
+            ref >> std::hex >> iy;
+            ref >> std::hex >> iz;
+            ref.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            __setBits(x,ix);
+            __setBits(y,iy);
+            t=__ieee754_hypot(x,y);
+            __getBits(it,t);
+            ulp_error = std::abs((int64_t)(it-iz));
+            ASSERT_LE(ulp_error,max_ulp);
+        }
+        ref.close();
+    }
+    
+    TEST(FDLIBMTest , smoke_test_pow )
+    {
+        uint64_t max_ulp = 2;
+        std::ifstream ref;
+        ref.open("smoke_test_pow.txt",std::ifstream::in);
+        while (ref.good() && ! ref.eof()) {
+            uint64_t ix,iy,iz,it,ulp_error;
+            double x,y,t;
+            ref >> std::hex >> ix;
+            ref >> std::hex >> iy;
+            ref >> std::hex >> iz;
+            ref.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            __setBits(x,ix);
+            __setBits(y,iy);
+            t=__ieee754_pow(x,y);
+            __getBits(it,t);
+            ulp_error = std::abs((int64_t)(it-iz));
+            ASSERT_LE(ulp_error,max_ulp);
+        }
+        ref.close();
+    }
+    
     TEST(FDLIBMTest , smoke_test_sin )
     {
         uint64_t max_ulp = 2;

@@ -17,20 +17,22 @@ sign do: [:sy |
 	exp do: [:ex | | sup inf |
 		sup := (ex > 1022) ifTrue: [1023 / (ex - 1022) log: 2] ifFalse: [1023 / (1023 - ex) log: 2].
 		inf := (ex > 1022) ifTrue: [ex - 1022 / 1023 log: 2] ifFalse: [1023 - ex / 1023 log: 2].
-	(((0 to: sup) collect: [:e | 1<<e + 1022 min: 2046]) , ((0 to: inf) collect: [:e | 1023 - (1<<e) max: 0])) asSet sorted do: [:ey | 
 		high do: [:hx |
-		high do: [:hy |
-			low do: [:lx |
-			low do: [:ly | | x y z |
+			low do: [:lx | | x |
 				x := BoxedFloat64 basicNew: 2.
 				x basicAt: 1 put: sx << 11 + ex << 20 + hx.
 				x basicAt: 2 put: lx.
+	[:exit | (((0 to: sup) collect: [:e | 1<<e + 1022 min: 2046]) , ((0 to: inf) collect: [:e | 1023 - (1<<e) max: 0])) asSet sorted do: [:ey | 
+		high do: [:hy |
+			low do: [:ly | | y z |
 				y := BoxedFloat64 basicNew: 2.
 				y basicAt: 1 put: sy << 11 + ey << 20 + hy.
 				y basicAt: 2 put: ly.
 				(x = 0 or: [y = 0]) ifFalse: [
-				(x raisedTo: y) isFinite ifTrue: [
+				(x raisedTo: y) isFinite ifFalse: [exit value].
 				z := ((x asArbitraryPrecisionFloatNumBits: 54*3) raisedTo: (y asArbitraryPrecisionFloatNumBits: 54*3)) asFloat.
+				z isZero ifTrue: [exit value].
+				z = 1 ifFalse: [
 				str nextPutAll: '0x'.
 				(x basicAt: 1) printOn: str base: 16 length: 8 padded: true.
 				(x basicAt: 2) printOn: str base: 16 length: 8 padded: true. 
@@ -42,4 +44,4 @@ sign do: [:sy |
 				str nextPutAll: '0x'.
 				(z basicAt: 1) printOn: str base: 16 length: 8 padded: true.
 				(z basicAt: 2) printOn: str base: 16 length: 8 padded: true.
-				str lf]]]]]]]]]]].
+				str lf]]]]]] valueWithExit]]]]]].

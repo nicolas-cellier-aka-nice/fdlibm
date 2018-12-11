@@ -40,8 +40,7 @@ double modf(double x, double *iptr)
                 i = (0x000fffff)>>j0;
                 if(((i0&i)|i1)==0) {            /* x is integral */
                     *iptr = x;
-                    __flipSign(x);
-                    __setLO(x, 0);      /* return +-0 */
+                    __setHILO(x, i0 & 0x80000000U , 0);      /* return +-0 */
                     return x;
                 } else {
                     __setHILO(*iptr, i0&(~i), 0);
@@ -50,15 +49,13 @@ double modf(double x, double *iptr)
             }
         } else if (j0>51) {             /* no fraction part */
             *iptr = x*one;
-            __flipSign(x);
-            __setLO(x, 0);      /* return +-0 */
+            __setHILO(x, i0 & 0x80000000U , 0);      /* return +-0 */
             return x;
         } else {                        /* fraction part in low x */
             i = ((unsigned)(0xffffffff))>>(j0-20);
             if((i1&i)==0) {             /* x is integral */
                 *iptr = x;
-                __flipSign(x);
-                __setLO(x, 0);  /* return +-0 */
+                __setHILO(x, i0 & 0x80000000U , 0);  /* return +-0 */
                 return x;
             } else {
                 __setHILO(*iptr, i0, i1&(~i));
